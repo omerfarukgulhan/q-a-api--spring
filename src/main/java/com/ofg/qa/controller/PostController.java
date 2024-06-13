@@ -27,7 +27,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ApiResponse<Optional<Post>> getPost(@PathVariable long postId) {
+    public ApiResponse<Post> getPost(@PathVariable long postId) {
         return new ApiResponse<>(true, "Data fetched successfully", postService.getPostById(postId));
     }
 

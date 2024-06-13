@@ -31,9 +31,8 @@ public class PostService {
         }
     }
 
-    public Optional<Post> getPostById(long id) {
-        System.out.println("log");
-        return postRepository.findById(id);
+    public Post getPostById(long id) {
+        return postRepository.findById(id).orElse(null);
     }
 
     public Post savePost(PostCreateRequest postCreateRequest) {
@@ -51,7 +50,7 @@ public class PostService {
         }
     }
 
-    public Post updatePost(long id,  PostUpdateRequest postUpdateRequest) {
+    public Post updatePost(long id, PostUpdateRequest postUpdateRequest) {
         Optional<Post> dbPost = postRepository.findById(id);
         if (dbPost.isPresent()) {
             Post updatedPost = dbPost.get();
