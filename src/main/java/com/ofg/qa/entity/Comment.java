@@ -32,8 +32,6 @@ public class Comment {
     @JsonIgnore
     private User user;
 
-    @Lob
-    @Column(columnDefinition = "text")
     private String text;
 
     @Temporal(TemporalType.TIMESTAMP)

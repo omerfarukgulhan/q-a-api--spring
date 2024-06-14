@@ -41,7 +41,6 @@ public class PostService {
             return null;
         } else {
             Post post = new Post();
-            post.setId(postCreateRequest.getId());
             post.setTitle(postCreateRequest.getTitle());
             post.setText(postCreateRequest.getText());
             post.setUser(user);
