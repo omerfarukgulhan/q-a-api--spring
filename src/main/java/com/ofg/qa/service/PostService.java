@@ -5,12 +5,14 @@ import com.ofg.qa.entity.Post;
 import com.ofg.qa.entity.User;
 import com.ofg.qa.requests.PostCreateRequest;
 import com.ofg.qa.requests.PostUpdateRequest;
+import com.ofg.qa.responses.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -23,12 +25,16 @@ public class PostService {
         this.userService = userService;
     }
 
-    public List<Post> getPosts(Optional<Long> userId) {
+    public List<PostResponse> getPosts(Optional<Long> userId) {
+        List<Post> list;
+
         if (userId.isPresent()) {
-            return postRepository.findByUserId(userId.get());
+            list = postRepository.findByUserId(userId.get());
         } else {
-            return postRepository.findAll();
+            list = postRepository.findAll();
         }
+
+        return list.stream().map(PostResponse::new).collect(Collectors.toList());
     }
 
     public Post getPostById(long id) {

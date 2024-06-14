@@ -3,6 +3,7 @@ package com.ofg.qa.controller;
 import com.ofg.qa.entity.Post;
 import com.ofg.qa.requests.PostCreateRequest;
 import com.ofg.qa.requests.PostUpdateRequest;
+import com.ofg.qa.responses.PostResponse;
 import com.ofg.qa.service.PostService;
 import com.ofg.qa.util.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ApiResponse<List<Post>> getPosts(@RequestParam Optional<Long> userId) {
+    public ApiResponse<List<PostResponse>> getPosts(@RequestParam Optional<Long> userId) {
         return new ApiResponse<>(true, "Data fetched successfully", postService.getPosts(userId));
     }
 
