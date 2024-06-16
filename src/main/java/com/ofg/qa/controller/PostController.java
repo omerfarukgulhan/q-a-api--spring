@@ -28,18 +28,18 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ApiResponse<Post> getPost(@PathVariable long postId) {
-        return new ApiResponse<>(true, "Data fetched successfully", postService.getPostById(postId));
+    public ApiResponse<PostResponse> getPost(@PathVariable long postId) {
+        return new ApiResponse<>(true, "Data fetched successfully", postService.getPostByIdWithLikes(postId));
     }
 
     @PostMapping
-    public ApiResponse<Post> createPost(@RequestBody PostCreateRequest postCreateRequest) {
+    public ApiResponse<PostResponse> createPost(@RequestBody PostCreateRequest postCreateRequest) {
         return new ApiResponse<>(true, "Data added successfully", postService.savePost(postCreateRequest));
     }
 
     @PutMapping("/{postId}")
-    public ApiResponse<Post> updatePost(@PathVariable long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
-        Post dbPost = postService.updatePost(postId, postUpdateRequest);
+    public ApiResponse<PostResponse> updatePost(@PathVariable long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
+        PostResponse dbPost = postService.updatePost(postId, postUpdateRequest);
         if (dbPost != null) {
             return new ApiResponse<>(true, "Data updated successfully", dbPost);
         } else {

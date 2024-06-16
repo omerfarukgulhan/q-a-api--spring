@@ -5,11 +5,13 @@ import com.ofg.qa.entity.Like;
 import com.ofg.qa.entity.Post;
 import com.ofg.qa.entity.User;
 import com.ofg.qa.requests.LikeCreateRequest;
+import com.ofg.qa.responses.LikeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LikeService {
@@ -24,23 +26,25 @@ public class LikeService {
         this.postService = postService;
     }
 
-    public List<Like> getLikes(Optional<Long> userId, Optional<Long> postId) {
+    public List<LikeResponse> getLikes(Optional<Long> userId, Optional<Long> postId) {
+        List<Like> list;
         if (userId.isPresent() && postId.isPresent()) {
-            return likeRepository.findByUserIdAndPostId(userId.get(), postId.get());
+            list = likeRepository.findByUserIdAndPostId(userId.get(), postId.get());
         } else if (userId.isPresent()) {
-            return likeRepository.findByUserId(userId.get());
+            list = likeRepository.findByUserId(userId.get());
         } else if (postId.isPresent()) {
-            return likeRepository.findByPostId(postId.get());
+            list = likeRepository.findByPostId(postId.get());
         } else {
-            return likeRepository.findAll();
+            list = likeRepository.findAll();
         }
+        return list.stream().map(LikeResponse::new).collect(Collectors.toList());
     }
 
-    public Like getLikeById(Long id) {
-        return likeRepository.findById(id).orElse(null);
+    public LikeResponse getLikeById(Long id) {
+        return new LikeResponse(likeRepository.findById(id).orElse(null));
     }
 
-    public Like saveLike(LikeCreateRequest likeCreateRequest) {
+    public LikeResponse saveLike(LikeCreateRequest likeCreateRequest) {
         User user = userService.getUserById(likeCreateRequest.getUserId());
         Post post = postService.getPostById(likeCreateRequest.getPostId());
 
@@ -48,7 +52,7 @@ public class LikeService {
             Like like = new Like();
             like.setUser(user);
             like.setPost(post);
-            return likeRepository.save(like);
+            return new LikeResponse(likeRepository.save(like));
         } else {
             return null;
         }
