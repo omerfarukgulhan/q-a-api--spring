@@ -13,11 +13,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class QaApplication {
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     public static void main(String[] args) {
         SpringApplication.run(QaApplication.class, args);
@@ -29,7 +33,7 @@ public class QaApplication {
             for (var i = 1; i <= 3; i++) {
                 User user = new User();
                 user.setUsername("user" + i);
-                user.setPassword("P4ssword");
+                user.setPassword(passwordEncoder.encode("password"));
                 userRepository.save(user);
 
                 Post post = new Post();
